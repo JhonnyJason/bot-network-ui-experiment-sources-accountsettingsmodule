@@ -8,30 +8,64 @@ cd-dark ?= black
 
 #accountsettings
     color = cd-bright
+    p.sideline
+        margin-bottom: 40px
+        text-align: center
+        line-height: 17px
+        svg
+            width 22px
+            height 22px
+            vertical-align: middle
+            margin-right 5px
+            position relative
+            top -4px
+
+
+        
     h1
         margin-top 40px !important
+    h2
+        margin-bottom 7px
     h3
         margin 10px 0
 
-    #import-title,
-    #key-input-line,
-    #import-options-line
-        display: none
-    #add-key-button,
-    #floating-import,
-    #signature-import,
-    #floating-export,
-    #signature-export
-        opacity: 0.2
-        pointer-events: none
+    .flashy-button
+        background-color cd-flash
+        font-weight bold
+        min-width 150px
+        padding 10px
+        border-radius: 3px
+        display flex
+        align-content: center
+        justify-content: center
+        svg
+            height 15px
+            width 15px
+            margin-right 10px
+
+    #delete-key-button.flashy-button
+        background-color: #600
+
+    #options-grid
+        display grid
+        margin-top 60px
+        gap 20px
+        grid-template-columns: 1fr 1fr
+        padding-bottom 30px
+
+#generate-key-button,
+#import-key-button
+    opacity: 0.2
+    pointer-events: none
 
 
 #id-display
     overflow hidden
     width 100%
-    background-color cd-dark
+    // background-color cd-flash
+    background-color #024
     display flex
-    padding 7px
+    padding 16px 7px
     box-sizing: border-box
 
     .display-frame-content
@@ -44,72 +78,86 @@ cd-dark ?= black
 
 #id-qr-line
     overflow: hidden
-    display flex
-    justify-content: flex-end
-    
-#id-qr-button
-    padding 5px
-    svg
-        width options-button-size
-        height options-button-size
+    text-align: center
 
-#key-input-line
-    position relative
-    background-color cd-dark
-    input
-        width "calc(100% - %s)" % (options-button-size * 2)
-
-#accept-key-button
-    display none
-    position absolute
-    left auto
-    right 3px
-    top 50%
-    transform: translateY(-50%)
-    .click-button
-        padding (options-button-size / 4)
-    svg
-        width: options-button-size - 5px
-        height: options-button-size - 5px
-
-#export-options-line,
-#import-options-line,
-#add-delete-options-line
-    display flex
-    justify-content: space-around
-    .click-button
-        padding (options-button-size / 4)
-    svg
-        width: options-button-size 
-        height: options-button-size 
-
-#export-options-line,
-#import-options-line,
-#add-delete-options-line    
-    margin auto
-    max-width: 320px
-    margin-bottom: 30px
-    border solid 1px cd-dark
-
-#accountsettings.no-key
+.no-key
+    #id-qr-line
+    #id-display
     #delete-key-button
-        opacity 0.2
+    #export-key-button
+        opacity: 0.2
         pointer-events: none
-    #export-title,
-    #export-options-line
-        display none
 
-    #add-key-button
+    #generate-key-button
+    #import-key-button
         opacity 1
         pointer-events: all
+
+
+// #key-input-line
+//     position relative
+//     background-color cd-dark
+//     input
+//         width "calc(100% - %s)" % (options-button-size * 2)
+
+@media screen and (max-width: 410px)
+    #accountsettings
+        #options-grid
+            grid-template-columns: 1fr
+
+// #accept-key-button
+//     display none
+//     position absolute
+//     left auto
+//     right 3px
+//     top 50%
+//     transform: translateY(-50%)
+//     .click-button
+//         padding (options-button-size / 4)
+//     svg
+//         width: options-button-size - 5px
+//         height: options-button-size - 5px
+
+
+
+
+// #export-options-line,
+// #import-options-line,
+// #add-delete-options-line
+//     display flex
+//     justify-content: space-around
+//     .click-button
+//         padding (options-button-size / 4)
+//     svg
+//         width: options-button-size 
+//         height: options-button-size 
+
+// #export-options-line,
+// #import-options-line,
+// #add-delete-options-line    
+//     margin auto
+//     margin-top: 60px
+//     border solid 1px cd-dark
+
+// #accountsettings.no-key
+//     #delete-key-button
+//         opacity 0.2
+//         pointer-events: none
+//     #export-title,
+//     #export-options-line
+//         display none
+
+//     #generate-key-button
+//         opacity 1
+//         pointer-events: all
     
-    #import-title
-    #key-input-line
-        display: block
-    #import-options-line
-        display flex
+//     #import-title
+//     #key-input-line
+//         display: block
+//     #import-options-line
+//         display flex
 
 
-#accountsettings.importing
-    #accept-key-button
-        display inline-block
+// #accountsettings.importing
+//     #accept-key-button
+//         display inline-block

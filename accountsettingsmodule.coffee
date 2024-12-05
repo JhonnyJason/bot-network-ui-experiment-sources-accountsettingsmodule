@@ -8,6 +8,8 @@ import { createLogFunctions } from "thingy-debug"
 #region modulesFromEnvironment
 import { createClient } from "secret-manager-client"
 
+import { ThingyCryptoNode } from "thingy-crypto-node"
+
 import * as state from "./statemodule.js"
 import * as utl from "./utilsmodule.js"
 import *  as qrDisplay from "./qrdisplaymodule.js"
@@ -15,19 +17,19 @@ import *  as qrReader from "./qrreadermodule.js"
 
 ############################################################
 #strange... whynotwork?
-idDisplay = document.getElementById("id-display")
-idQrButton = document.getElementById("id-qr-button")
-addKeyButton = document.getElementById("add-key-button")
-deleteKeyButton = document.getElementById("delete-key-button")
-importKeyInput = document.getElementById("import-key-input")
-acceptKeyButton = document.getElementById("accept-key-button")
-qrScanImport = document.getElementById("qr-scan-import")
-floatingImport = document.getElementById("floating-import")
-signatureImport = document.getElementById("signature-import")
-copyExport = document.getElementById("copy-export")
-qrExport = document.getElementById("qr-export")
-floatingExport = document.getElementById("floating-export")
-signatureExport = document.getElementById("signature-export")
+# idDisplay = document.getElementById("id-display")
+# idQrButton = document.getElementById("id-qr-button")
+# addKeyButton = document.getElementById("add-key-button")
+# deleteKeyButton = document.getElementById("delete-key-button")
+# importKeyInput = document.getElementById("import-key-input")
+# acceptKeyButton = document.getElementById("accept-key-button")
+# qrScanImport = document.getElementById("qr-scan-import")
+# floatingImport = document.getElementById("floating-import")
+# signatureImport = document.getElementById("signature-import")
+# copyExport = document.getElementById("copy-export")
+# qrExport = document.getElementById("qr-export")
+# floatingExport = document.getElementById("floating-export")
+# signatureExport = document.getElementById("signature-export")
 
 #endregion
 
@@ -42,17 +44,23 @@ export initialize = ->
 
     idDisplay.addEventListener("click", idDisplayClicked)
     idQrButton.addEventListener("click", idQrButtonClicked)
-    addKeyButton.addEventListener("click", addKeyButtonClicked)
+
+    generateKeyButton.addEventListener("click", generateKeyButtonClicked)
+    importKeyButton.addEventListener("click", importKeyButtonClicked)
+    exportKeyButton.addEventListener("click", exportKeyButtonClicked)
     deleteKeyButton.addEventListener("click", deleteKeyButtonClicked)
-    importKeyInput.addEventListener("change", importKeyInputChanged)
-    acceptKeyButton.addEventListener("click", acceptKeyButtonClicked)
-    qrScanImport.addEventListener("click", qrScanImportClicked)
-    floatingImport.addEventListener("click", floatingImportClicked)
-    signatureImport.addEventListener("click", signatureImportClicked)
-    copyExport.addEventListener("click", copyExportClicked)
-    qrExport.addEventListener("click", qrExportClicked)
-    floatingExport.addEventListener("click", floatingExportClicked)
-    signatureExport.addEventListener("click", signatureExportClicked)
+    
+    # addKeyButton.addEventListener("click", addKeyButtonClicked)
+    # deleteKeyButton.addEventListener("click", deleteKeyButtonClicked)
+    # importKeyInput.addEventListener("change", importKeyInputChanged)
+    # acceptKeyButton.addEventListener("click", acceptKeyButtonClicked)
+    # qrScanImport.addEventListener("click", qrScanImportClicked)
+    # floatingImport.addEventListener("click", floatingImportClicked)
+    # signatureImport.addEventListener("click", signatureImportClicked)
+    # copyExport.addEventListener("click", copyExportClicked)
+    # qrExport.addEventListener("click", qrExportClicked)
+    # floatingExport.addEventListener("click", floatingExportClicked)
+    # signatureExport.addEventListener("click", signatureExportClicked)
 
     syncIdFromState()
 
@@ -93,6 +101,9 @@ syncIdFromState = ->
     else
         displayId("") 
         accountsettings.classList.add("no-key")
+
+    # displayId("") 
+    # accountsettings.classList.add("no-key")
     return
 
 ############################################################
@@ -111,6 +122,24 @@ idDisplayClicked = ->
 idQrButtonClicked = ->
     log "idDisplayClicked"
     qrDisplay.displayCode(idContent.textContent)
+    return
+
+
+############################################################
+generateKeyButtonClicked = ->
+    log "generateKeyButtonClicked"
+    return
+
+importKeyButtonClicked = ->
+    log "importKeyButtonClicked"
+    return
+
+exportKeyButtonClicked = ->
+    log "exportKeyButtonClicked"
+    return
+
+deleteKeyButtonClicked = ->
+    log "deleteKeyButtonClicked"
     return
 
 ############################################################
