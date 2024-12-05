@@ -1,9 +1,6 @@
 // accountsettings styles
-picture-size ?= 90px
 id-copy-icon-size ?= 15px
-options-button-size ?= 30px
 cd-bright ?= white
-cd-dark ?= black 
 
 
 #accountsettings
@@ -18,10 +15,7 @@ cd-dark ?= black
             vertical-align: middle
             margin-right 5px
             position relative
-            top -4px
-
-
-        
+            top -4px 
     h1
         margin-top 40px !important
     h2
@@ -46,18 +40,22 @@ cd-dark ?= black
     #delete-key-button.flashy-button
         background-color: #600
 
-    #options-grid
-        display grid
-        margin-top 60px
-        gap 20px
-        grid-template-columns: 1fr 1fr
-        padding-bottom 30px
+#options-grid
+    display grid
+    margin-top 60px
+    gap 20px
+    grid-template-columns: 1fr 1fr
+    padding-bottom 30px
 
-#generate-key-button,
+#keygeneration-frame
+#keyimport-frame
+#keyexport-frame
+    display none
+
+#generate-key-button
 #import-key-button
     opacity: 0.2
     pointer-events: none
-
 
 #id-display
     overflow hidden
@@ -94,70 +92,86 @@ cd-dark ?= black
         pointer-events: all
 
 
-// #key-input-line
-//     position relative
-//     background-color cd-dark
-//     input
-//         width "calc(100% - %s)" % (options-button-size * 2)
+.generate-key
+    #id-display-container
+    #options-grid
+        display: none
+    
+    #keygeneration-frame
+        display block
+
 
 @media screen and (max-width: 410px)
     #accountsettings
         #options-grid
             grid-template-columns: 1fr
 
-// #accept-key-button
-//     display none
-//     position absolute
-//     left auto
-//     right 3px
-//     top 50%
-//     transform: translateY(-50%)
-//     .click-button
-//         padding (options-button-size / 4)
-//     svg
-//         width: options-button-size - 5px
-//         height: options-button-size - 5px
 
 
+/*====================================================================
+Keygeneration Frame
+====================================================================*/
+#keygeneration-key-id-label
+    margin-top 50px
+    margin-bottom 7px
 
 
-// #export-options-line,
-// #import-options-line,
-// #add-delete-options-line
-//     display flex
-//     justify-content: space-around
-//     .click-button
-//         padding (options-button-size / 4)
-//     svg
-//         width: options-button-size 
-//         height: options-button-size 
-
-// #export-options-line,
-// #import-options-line,
-// #add-delete-options-line    
-//     margin auto
-//     margin-top: 60px
-//     border solid 1px cd-dark
-
-// #accountsettings.no-key
-//     #delete-key-button
-//         opacity 0.2
-//         pointer-events: none
-//     #export-title,
-//     #export-options-line
-//         display none
-
-//     #generate-key-button
-//         opacity 1
-//         pointer-events: all
-    
-//     #import-title
-//     #key-input-line
-//         display: block
-//     #import-options-line
-//         display flex
+#keygeneration-key-id-display
+    background-color #024
+    padding 16px 7px
+    box-sizing: border-box
+    margin-bottom 16px
+    overflow: hidden
+    text-overflow: ellipsis
 
 
-// #accountsettings.importing
-//     #accept-key-button
-//         display inline-block
+#keygeneration-regeneration-button
+    max-width 320px
+    box-sizing: border-box
+    display: block
+    margin-left auto
+
+#keygeneration-protected-indicator
+    text-align: left
+    margin-top 16px
+    margin-bottom 30px
+    svg
+        height 30px
+        width 30px
+        margin-right 5px
+        vertical-align: middle
+
+#keygeneration-not-protected-indicator 
+    color cd-warning-orange
+#keygeneration-phrase-protected-indicator
+    color: cd-okay-green
+    display none
+#keygeneration-phrase-protected-indicator
+    color: cd-okay-green
+    display none
+
+#keygeneration-protected-indicator.phrase-protected
+    #keygeneration-not-protected-indicator 
+        display none
+    #keygeneration-phrase-protected-indicator
+        display block
+
+#keygeneration-protected-indicator.qr-protected
+    #keygeneration-not-protected-indicator 
+        display none
+    #keygeneration-qr-protected-indicator
+        display block
+
+#keygeneration-conclusion-row
+    margin 0  30px
+    display: grid
+    gap 20px
+    grid-template-columns: 1fr 1fr
+    #keygeneration-use-button
+        opacity 0.2
+        pointer-events: none
+
+#keygeneration-conclusion-row.acceptable
+    #keygeneration-use-button
+        opacity 1
+        pointer-events: all

@@ -12,24 +12,12 @@ import { ThingyCryptoNode } from "thingy-crypto-node"
 
 import * as state from "./statemodule.js"
 import * as utl from "./utilsmodule.js"
-import *  as qrDisplay from "./qrdisplaymodule.js"
-import *  as qrReader from "./qrreadermodule.js" 
+import * as qrDisplay from "./qrdisplaymodule.js"
+import * as qrReader from "./qrreadermodule.js" 
+import * as triggers from "./navtriggers.js"
 
 ############################################################
-#strange... whynotwork?
-# idDisplay = document.getElementById("id-display")
-# idQrButton = document.getElementById("id-qr-button")
-# addKeyButton = document.getElementById("add-key-button")
-# deleteKeyButton = document.getElementById("delete-key-button")
-# importKeyInput = document.getElementById("import-key-input")
-# acceptKeyButton = document.getElementById("accept-key-button")
-# qrScanImport = document.getElementById("qr-scan-import")
-# floatingImport = document.getElementById("floating-import")
-# signatureImport = document.getElementById("signature-import")
-# copyExport = document.getElementById("copy-export")
-# qrExport = document.getElementById("qr-export")
-# floatingExport = document.getElementById("floating-export")
-# signatureExport = document.getElementById("signature-export")
+import * as keygeneration from "./keygeneration.js"
 
 #endregion
 
@@ -49,6 +37,8 @@ export initialize = ->
     importKeyButton.addEventListener("click", importKeyButtonClicked)
     exportKeyButton.addEventListener("click", exportKeyButtonClicked)
     deleteKeyButton.addEventListener("click", deleteKeyButtonClicked)
+
+    keygeneration.initialize()
     
     # addKeyButton.addEventListener("click", addKeyButtonClicked)
     # deleteKeyButton.addEventListener("click", deleteKeyButtonClicked)
@@ -128,18 +118,23 @@ idQrButtonClicked = ->
 ############################################################
 generateKeyButtonClicked = ->
     log "generateKeyButtonClicked"
+    accountsettings.classList.add("generate-key")
+    ##TODO
     return
 
 importKeyButtonClicked = ->
     log "importKeyButtonClicked"
+    triggers.importKey()
     return
 
 exportKeyButtonClicked = ->
     log "exportKeyButtonClicked"
+    triggers.exportKey()
     return
 
 deleteKeyButtonClicked = ->
     log "deleteKeyButtonClicked"
+    triggers.deleteKey()
     return
 
 ############################################################
@@ -159,13 +154,6 @@ addKeyButtonClicked = ->
         log "Error when trying to create a new client on #{serverURL}\n#{err.message}"
     return
 
-deleteKeyButtonClicked = ->
-    log "deleteKeyButtonClicked"
-    currentClient = null
-    state.save("publicKeyHex", "")
-    state.save("secretKeyHex", "")
-    state.save("accountId", "")
-    return
 
 ############################################################
 importKeyInputChanged = ->
@@ -236,5 +224,20 @@ signatureExportClicked = ->
 
 ############################################################
 export getClient = -> currentClient
+
+export hasKey = -> return currentClient?
+
+export deleteAccount = ->
+    log "deleteAccount"
+    currentClient = null
+    ## TODO update
+    state.save("publicKeyHex", "")
+    state.save("secretKeyHex", "")
+    state.save("accountId", "")
+    return
+
+export useNewKey = (fullKeyHandle) ->
+    log "useNewKey"
+    return
 
 #92e102b2b2ef0d5b498fae3d7a9bbc94fc6ddc9544159b3803a6f4d239d76d62

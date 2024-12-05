@@ -1,0 +1,25 @@
+p A new Key as been generated.
+#keygeneration-key-id-label New Key ID
+#keygeneration-key-id-display
+#keygeneration-regeneration-button.click-button.flashy-button 
+    svg: use(href="#svg-refresh-icon")
+    .label Regenerate New Key
+#keygeneration-protected-indicator 
+    #keygeneration-not-protected-indicator 
+        svg: use(href="#svg-unprotected-icon")
+        | This Key is currently unprotected
+    #keygeneration-phrase-protected-indicator
+        svg: use(href="#svg-phrase-protected-icon") 
+        | This key is Protected with a Secret Phrase 
+    #keygeneration-phrase-protected-indicator
+        svg: use(href="#svg-qr-protected-icon") 
+        | This key is Protected with a Qr Code 
+
+#keygeneration-conclusion-row 
+    #keygeneration-use-button.click-button.flashy-button 
+        .label Use
+
+    #keygeneration-cancel-button.click-button.flashy-button 
+        .label Cancel
+
+            

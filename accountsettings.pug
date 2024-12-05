@@ -2,16 +2,21 @@
 #accountsettings
     p.sideline
         svg: use(href="#svg-notice-icon") 
-        | By importing or generating any key, I understand that - whenever using said key the associated account will be identifiable by its ID.
-    h2 ID
-    #id-display.text-display-frame.click-button
-        .display-frame-content
-        svg.copy-icon: use(href="#svg-copy-icon")
-    #id-qr-line
-        #id-qr-button.click-button.flashy-button
-            svg: use(href="#svg-qrcode-icon")
-            .label Show ID QR
+        | By importing or generating any key I understand that - whenever using said key - the associated account will be identifiable by its ID.
+    #id-display-container
+        h2 ID
+        #id-display.text-display-frame.click-button
+            .display-frame-content
+            svg.copy-icon: use(href="#svg-copy-icon")
+        #id-qr-line
+            #id-qr-button.click-button.flashy-button
+                svg: use(href="#svg-qrcode-icon")
+                .label Show ID QR
     
+    #keygeneration-frame: include keygenerationframe.pug
+    #keyimport-frame: include keyimportframe.pug
+    #keyexport-frame: include keyexportframe.pug
+
     #options-grid
         #generate-key-button.click-button.flashy-button
             svg: use(href="#svg-add-icon")
