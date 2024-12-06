@@ -90,11 +90,11 @@ goRawClicked = ->
     currentKeyObj.protection = "none"
     currentKeyObj.keySaltHex = ""
     currentKeyObj.keyTraceHex = ""
-    
+
     resetProtectionButtons()
     conclusionRow.classList.add("acceptable")
     goRawButton.classList.add("active")
-    keygenerationProtectedIndicator.className = ""
+    protectedIndicator.className = ""
     return
 
 phraseProtectClicked = ->
@@ -140,7 +140,7 @@ export useQrData = (data) ->
     resetProtectionButtons()
     conclusionRow.classList.add("acceptable")
     qrProtectButton.classList.add("active")
-    keygenerationProtectedIndicator.className = "qr-protected"
+    protectedIndicator.className = "qr-protected"
     return
 
 export usePhraseData = (data) ->
@@ -150,5 +150,5 @@ export usePhraseData = (data) ->
     resetProtectionButtons()
     conclusionRow.classList.add("acceptable")
     phraseProtectButton.classList.add("active")
-    keygenerationProtectedIndicator.className = "phrase-protected"
+    protectedIndicator.className = "phrase-protected"
     return
