@@ -1,9 +1,19 @@
+p Export your Key here.
+#keyexport-key-id-label Your Key ID
+#keyexport-key-id-display
+            
 #keyexport-unprotected-raw
     svg: use(href="svg-unprotected-icon")
-    .label Raw Unprotected Key
+    .label Export Raw Unprotected Key
 #keyexport-secret-phrase-protected 
     svg:  use(href="svg-qr-protected-icon")
-    .label Protected - Secret Phrase
+    .label Export Protected - Secret Phrase
 #keyexport-qrcode-protected 
     svg:  use(href="svg-phrase-protected-icon")
-    .label Protected - QR Code
+    .label Export Protected - QR Code
+
+#keyexport-conclusion-row 
+    #keyexport-use-button.click-button.flashy-button 
+        .label Use
+    #keyexport-cancel-button.click-button.flashy-button 
+        .label Cancel

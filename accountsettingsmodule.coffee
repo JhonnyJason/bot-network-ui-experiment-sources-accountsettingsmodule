@@ -5,10 +5,10 @@ import { createLogFunctions } from "thingy-debug"
 #endregion
 
 ############################################################
-#region modulesFromEnvironment
-import { createClient } from "secret-manager-client"
-
 import { ThingyCryptoNode } from "thingy-crypto-node"
+
+############################################################
+#region modulesFromEnvironment
 
 import * as state from "./statemodule.js"
 import * as utl from "./utilsmodule.js"
@@ -18,20 +18,26 @@ import * as triggers from "./navtriggers.js"
 
 ############################################################
 import * as keygeneration from "./keygeneration.js"
+import * as keyimport from "./keyimport.js"
+import * as keyexport from "./keyexport.js"
+
+############################################################
+import { cryptoContext } from "./configmodule.js"
 
 #endregion
 
 ############################################################
 idContent = null
-currentClient = null
+currentCryptoNode = null
+currentKeyObj = null
 
 ############################################################
 export initialize = ->
     log "initialize"
-    idContent = idDisplay.getElementsByClassName("display-frame-content")[0]
-
     idDisplay.addEventListener("click", idDisplayClicked)
     idQrButton.addEventListener("click", idQrButtonClicked)
+    
+    idContent = idDisplay.getElementsByClassName("display-frame-content")[0]
 
     generateKeyButton.addEventListener("click", generateKeyButtonClicked)
     importKeyButton.addEventListener("click", importKeyButtonClicked)
@@ -39,67 +45,70 @@ export initialize = ->
     deleteKeyButton.addEventListener("click", deleteKeyButtonClicked)
 
     keygeneration.initialize()
-    
-    # addKeyButton.addEventListener("click", addKeyButtonClicked)
-    # deleteKeyButton.addEventListener("click", deleteKeyButtonClicked)
-    # importKeyInput.addEventListener("change", importKeyInputChanged)
-    # acceptKeyButton.addEventListener("click", acceptKeyButtonClicked)
-    # qrScanImport.addEventListener("click", qrScanImportClicked)
-    # floatingImport.addEventListener("click", floatingImportClicked)
-    # signatureImport.addEventListener("click", signatureImportClicked)
-    # copyExport.addEventListener("click", copyExportClicked)
-    # qrExport.addEventListener("click", qrExportClicked)
-    # floatingExport.addEventListener("click", floatingExportClicked)
-    # signatureExport.addEventListener("click", signatureExportClicked)
+    keyimport.initialize()    
+    keyexport.initialize()
 
-    syncIdFromState()
-
-    state.addOnChangeListener("publicKeyHex", syncIdFromState)
-    state.addOnChangeListener("secretManagerURL", onServerURLChanged)
-
-    await createCurrentClient()
+    readKeyObject()
+    createCurrentCryptoNode()
+    updateDisplay()
     return
 
 ############################################################
 #region internalFunctions
-createCurrentClient = ->
-    log "createCurrentClient"
+createCurrentCryptoNode = ->
+    log "createCurrentCryptoNode"
+    if !currentKeyObj? then return currentCryptoNode = null
+
     try
-        secretKeyHex = utl.strip0x(state.load("secretKeyHex"))
-        publicKeyHex = utl.strip0x(state.load("publicKeyHex"))
-        serverURL = state.get("secretManagerURL")
-        clientOptions = {secretKeyHex, publicKeyHex, serverURL}
-        currentClient = await createClient(clientOptions)
+        options = {
+            secretKeyHex: currentKeyObj.secretKeyHex
+            publicKeyHex: currentKeyObj.publicKeyHex
+            context: cryptoContext
+        }
+        currentCryptoNode = new ThingyCryptoNode(options)
     catch err then log err
     return
 
 ############################################################
 onServerURLChanged = ->
     log "onServerURLChanged"
-    serverURL = state.get("secretManagerURL")
+    serverURL = state.load("secretManagerURL")
     secretManagerClient.updateServerURL(serverURL)
     return
 
 ############################################################
-syncIdFromState = ->
-    log "syncIdFromState"
-    idHex = state.load("publicKeyHex")
-    log "idHex is "+idHex
-    if utl.isValidKey(idHex)
-        displayId(idHex)
-        accountsettings.classList.remove("no-key")
-    else
-        displayId("") 
-        accountsettings.classList.add("no-key")
+readKeyObject = ->
+    log "readKeyObject"
+    protection = state.load("protection")
+    accountId = state.load("accountIdHex")
 
-    # displayId("") 
-    # accountsettings.classList.add("no-key")
+    log "accountId is "+accountId
+
+    if !utl.isValidKey(accountId) then return
+
+    publicKeyHex = accountId
+    secretKeyHex = ""
+    keyTraceHex = ""
+    keySaltHex = ""
+
+    switch protection
+        when "none" then secretKeyHex = state.load("secretKeyHex")
+        when "qr", "phrase"
+            keyTraceHex = state.load("keyTraceHex")
+            keySaltHex = state.load("keySaltHex")
+
+    currentKeyObj = { secretKeyHex, publicKeyHex, protection, keyTraceHex, keySaltHex }
     return
 
 ############################################################
-displayId = (idHex) ->
-    log "displayId"
-    idContent.textContent = utl.add0x(idHex)
+updateDisplay = ->
+    log "updateDisplay"
+    if currentKeyObj? and currentKeyObj.publicKeyHex? and currentCryptoNode?
+        idContent.textContent = utl.add0x(currentKeyObj.publicKeyHex)
+        document.body.classList.remove("no-key")
+    else 
+        idContent.textContent = ""
+        document.body.classList.add("no-key")
     return
 
 ############################################################
@@ -118,18 +127,17 @@ idQrButtonClicked = ->
 ############################################################
 generateKeyButtonClicked = ->
     log "generateKeyButtonClicked"
-    accountsettings.classList.add("generate-key")
-    ##TODO
+    triggers.keyGeneration()
     return
 
 importKeyButtonClicked = ->
     log "importKeyButtonClicked"
-    triggers.importKey()
+    triggers.keyImport()
     return
 
 exportKeyButtonClicked = ->
     log "exportKeyButtonClicked"
-    triggers.exportKey()
+    triggers.keyExport()
     return
 
 deleteKeyButtonClicked = ->
@@ -200,13 +208,13 @@ signatureImportClicked = ->
 ############################################################
 copyExportClicked = ->
     log "copyExportClicked"
-    key = state.get("secretKeyHex")
+    key = state.load("secretKeyHex")
     utl.copyToClipboard(key)
     return
 
 qrExportClicked = ->
     log "qrExportClicked"
-    key = state.get("secretKeyHex")
+    key = state.load("secretKeyHex")
     qrDisplay.displayCode(key)
     return
 
@@ -223,21 +231,102 @@ signatureExportClicked = ->
 #endregion
 
 ############################################################
-export getClient = -> currentClient
+storeKeyObject = ->
+    log "storeKeyObject"
 
-export hasKey = -> return currentClient?
+    state.save("accountIdHex", currentKeyObj.publicKeyHex, false)
+    state.save("protection", currentKeyObj.protection, false)
+    state.save("keyTraceHex", currentKeyObj.keyTraceHex, false)
+    state.save("keySaltHex", currentKeyObj.keySaltHex, false)
+
+    if currentKeyObj.protection == "none"
+        state.save("secretKeyHex", currentKeyObj.secretKeyHex, false)
+    else
+        state.remove("secretKeyHex")
+
+    # state.saveAll()
+    return
+
+############################################################
+useUnprotectedKey = (fullKeyHandle) ->
+    log "useUnprotectedKey"
+
+    secretKeyHex = fullKeyHandle.secretKeyHex
+    publicKeyHex = fullKeyHandle.publicKeyHex
+    protection = fullKeyHandle.protection
+    keyTraceHex = ""
+    keySaltHex = ""
+
+    currentKeyObj = { secretKeyHex, publicKeyHex, protection, keyTraceHex, keySaltHex }
+    storeKeyObject()
+
+    createCurrentCryptoNode()
+    updateDisplay()
+    return
+
+useProtectedKey = (fullKeyHandle) ->
+    log "useProtectedKey"
+
+    secretKeyHex = fullKeyHandle.secretKeyHex
+    publicKeyHex = fullKeyHandle.publicKeyHex
+    protection = fullKeyHandle.protection
+    keyTraceHex = fullKeyHandle.keyTraceHex
+    keySaltHex = fullKeyHandle.keySaltHex
+
+    currentKeyObj = { secretKeyHex, publicKeyHex, protection, keyTraceHex, keySaltHex }
+    storeKeyObject()
+
+    createCurrentCryptoNode()
+    updateDisplay()
+    return
+
+############################################################
+export getCryptoNode = -> currentCryptoNode
+export hasKey = -> currentCryptoNode?
 
 export deleteAccount = ->
     log "deleteAccount"
-    currentClient = null
-    ## TODO update
-    state.save("publicKeyHex", "")
-    state.save("secretKeyHex", "")
-    state.save("accountId", "")
+    currentCryptoNode = null
+    currentKeyObj = null
+    
+    state.remove("secretKeyHex")
+    state.remove("accountIdHex")
+    state.remove("protection")
+    state.remove("keyTraceHex")
+    state.remove("keySaltHex")
+    
+    updateDisplay()
     return
 
 export useNewKey = (fullKeyHandle) ->
     log "useNewKey"
+    if fullKeyHandle.protection == "none" then useUnprotectedKey(fullKeyHandle)
+    else useProtectedKey(fullKeyHandle)
     return
+
+############################################################
+#region UI Functions
+export setToKeyGeneration = ->
+    log "setToKeyGeneration"
+    accountsettings.className = "generate-key"
+    return
+
+export setToKeyImport = ->
+    log "setToKeyImport"
+    accountsettings.className = "import-key"
+    return
+
+export setToKeyExport = ->
+    log "setToKeyExport"
+    accountsettings.className = "export-key"
+    return
+
+export setOff = ->
+    log "setOff"
+    accountsettings.className = ""
+    return
+    
+#endregion
+
 
 #92e102b2b2ef0d5b498fae3d7a9bbc94fc6ddc9544159b3803a6f4d239d76d62

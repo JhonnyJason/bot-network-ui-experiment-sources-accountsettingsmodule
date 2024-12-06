@@ -100,6 +100,22 @@ cd-bright ?= white
     #keygeneration-frame
         display block
 
+.import-key
+    #id-display-container
+    #options-grid
+        display: none
+    
+    #keyimport-frame
+        display block
+
+
+.export-key
+    #id-display-container
+    #options-grid
+        display: none
+    
+    #keyexport-frame
+        display block
 
 @media screen and (max-width: 410px)
     #accountsettings
@@ -111,9 +127,10 @@ cd-bright ?= white
 /*====================================================================
 Keygeneration Frame
 ====================================================================*/
-#keygeneration-key-id-label
-    margin-top 50px
-    margin-bottom 7px
+#keygeneration-frame
+    h2
+        margin-top 50px
+        margin-bottom 7px
 
 
 #keygeneration-key-id-display
@@ -126,20 +143,21 @@ Keygeneration Frame
 
 
 #keygeneration-regeneration-button
-    max-width 320px
+    // max-width 320px
     box-sizing: border-box
     display: block
     margin-left auto
 
 #keygeneration-protected-indicator
-    text-align: left
-    margin-top 16px
-    margin-bottom 30px
+    // text-align: left
+    margin-top 20px
     svg
         height 30px
         width 30px
         margin-right 5px
-        vertical-align: middle
+    .label
+        line-height: 30px
+        font-weight: bold
 
 #keygeneration-not-protected-indicator 
     color cd-warning-orange
@@ -162,8 +180,29 @@ Keygeneration Frame
     #keygeneration-qr-protected-indicator
         display block
 
+#keygeneration-protection-options
+    margin-top: 16px 
+    margin-bottom 60px
+    display grid
+    gap 20px
+    
+    .click-button
+        color #000
+        opacity: 0.7
+        border solid 2px black
+        svg
+            height  25px
+            width 25px
+        .label
+            line-height: 25px
+
+    .click-button.active
+        color #fff
+        opacity 1
+        border: solid 2px cd-okay-green
+
 #keygeneration-conclusion-row
-    margin 0  30px
+    margin 30px 0
     display: grid
     gap 20px
     grid-template-columns: 1fr 1fr
@@ -173,5 +212,22 @@ Keygeneration Frame
 
 #keygeneration-conclusion-row.acceptable
     #keygeneration-use-button
+        opacity 1
+        pointer-events: all
+
+/*====================================================================
+Key Import Frame
+====================================================================*/
+#keyimport-conclusion-row
+    margin 30px 0
+    display: grid
+    gap 20px
+    grid-template-columns: 1fr 1fr
+    #keyimport-use-button
+        opacity 0.2
+        pointer-events: none
+
+#keyimport-conclusion-row.acceptable
+    #keyimport-use-button
         opacity 1
         pointer-events: all
