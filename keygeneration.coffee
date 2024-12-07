@@ -9,7 +9,7 @@ import * as secUtl from "secret-manager-crypto-utils"
 
 ############################################################
 import * as utl from "./utilsmodule.js"
-import * as account from "./accountsettingsmodule.js"
+import * as account from "./accountmodule.js"
 import * as triggers from "./navtriggers.js"
 
 ############################################################
@@ -30,7 +30,7 @@ conclusionRow = document.getElementById("keygeneration-conclusion-row
 #endregion
 
 ############################################################
-currentKeyObj = null
+keygenHandle = null
 
 ############################################################
 export initialize = ->
@@ -51,8 +51,8 @@ export initialize = ->
 ############################################################
 generateNewRawKey = ->
     log "generateNewRawKey"
-    currentKeyObj = await secUtl.createKeyPairHex()
-    keyIdDisplay.textContent = utl.add0x(currentKeyObj.publicKeyHex)
+    keygenHandle = await secUtl.createKeyPairHex()
+    keyIdDisplay.textContent = utl.add0x(keygenHandle.publicKeyHex)
     protectedIndicator.className = ""
 
     resetProtectionButtons()
@@ -70,7 +70,7 @@ resetProtectionButtons = ->
 ############################################################
 useButtonClicked = ->
     log "useButtonClicked"
-    account.useNewKey(currentKeyObj)
+    account.useNewKey(keygenHandle)
     generateNewRawKey()
     triggers.back()    
     return
@@ -87,9 +87,9 @@ regenerationButtonClicked = ->
 
 goRawClicked = ->
     log "goRawClicked"
-    currentKeyObj.protection = "none"
-    currentKeyObj.keySaltHex = ""
-    currentKeyObj.keyTraceHex = ""
+    keygenHandle.protection = "none"
+    keygenHandle.keySaltHex = ""
+    keygenHandle.keyTraceHex = ""
 
     resetProtectionButtons()
     conclusionRow.classList.add("acceptable")
@@ -117,15 +117,15 @@ createKeyProtection = (secretData) ->
     keySaltHex = await secUtl.createSymKey() # returns random 48 bytes in hex
     seed = keySaltHex + secretData
     splitterKeyHex = await utl.seedToKey(seed)
-    secretKeyHex = currentKeyObj.secretKeyHex
+    secretKeyHex = keygenHandle.secretKeyHex
 
 
     newFragment = utl.hexXOR(secretKeyHex, splitterKeyHex)
 
-    currentKeyObj.keyTraceHex = newFragment
-    currentKeyObj.keySaltHex = keySaltHex
+    keygenHandle.keyTraceHex = newFragment
+    keygenHandle.keySaltHex = keySaltHex
 
-    # regeneratedKey = utl.hexXOR(currentKeyObj.keyTraceHex, splitterKeyHex)
+    # regeneratedKey = utl.hexXOR(keygenHandle.keyTraceHex, splitterKeyHex)
     # olog {
     #     regeneratedKey, 
     #     secretKeyHex
@@ -136,6 +136,7 @@ createKeyProtection = (secretData) ->
 export useQrData = (data) ->
     log "useQrData #{data}"
     createKeyProtection(data)
+    keygenHandle.protection = "qr"
 
     resetProtectionButtons()
     conclusionRow.classList.add("acceptable")
@@ -146,6 +147,7 @@ export useQrData = (data) ->
 export usePhraseData = (data) ->
     log "usePhraseData #{data}"
     createKeyProtection(data)
+    keygenHandle.protection = "phrase"
 
     resetProtectionButtons()
     conclusionRow.classList.add("acceptable")

@@ -38,3 +38,26 @@ cancelButtonClicked = ->
     log "cancelButtonClicked"
     accountsettings.classList.remove("export-key")
     return
+
+
+############################################################
+copyExportClicked = ->
+    log "copyExportClicked"
+    key = state.load("secretKeyHex")
+    utl.copyToClipboard(key)
+    return
+
+qrExportClicked = ->
+    log "qrExportClicked"
+    key = state.load("secretKeyHex")
+    qrDisplay.displayCode(key)
+    return
+
+floatingExportClicked = ->
+    log "floatingExportClicked"
+    return
+
+signatureExportClicked = ->
+    log "signatureExportClicked"
+    return
+

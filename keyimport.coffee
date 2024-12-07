@@ -44,3 +44,28 @@ cancelButtonClicked = ->
     log "cancelButtonClicked"
     accountsettings.classList.remove("import-key")
     return
+
+
+
+
+
+############################################################
+qrScanImportClicked = ->
+    log "qrScanImportClicked"
+    try
+        key = await qrReader.read()
+        importKeyInput.value = key
+        importKeyInputChanged()
+    catch err then log err
+    return
+
+floatingImportClicked = ->
+    log "floatingImportClicked"
+    ##TODO implement
+    return
+
+signatureImportClicked = ->
+    log "signatureImportClicked"
+    ##TODO implement
+    return
+
