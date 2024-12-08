@@ -23,8 +23,8 @@ currentKeyObj = null
 ############################################################
 export initialize = ->
     log "initialize"
-    useButton.addEventListener("click", useButtonClicked)
-    cancelButton.addEventListener("click", cancelButtonClicked)
+    # useButton.addEventListener("click", useButtonClicked)
+    # cancelButton.addEventListener("click", cancelButtonClicked)
     return
 
 
