@@ -43,13 +43,13 @@ cancelButtonClicked = ->
 ############################################################
 copyExportClicked = ->
     log "copyExportClicked"
-    key = state.load("secretKeyHex")
+    key = S.load("secretKeyHex")
     utl.copyToClipboard(key)
     return
 
 qrExportClicked = ->
     log "qrExportClicked"
-    key = state.load("secretKeyHex")
+    key = S.load("secretKeyHex")
     qrDisplay.displayCode(key)
     return
 
