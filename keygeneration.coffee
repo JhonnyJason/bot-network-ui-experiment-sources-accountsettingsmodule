@@ -109,8 +109,7 @@ qrProtectClicked = ->
     triggers.qrProtect()
     return
 
-
-############################################################
+###########################################################
 createKeyProtection = (secretData) ->
     log "createKeyProtection"
 
