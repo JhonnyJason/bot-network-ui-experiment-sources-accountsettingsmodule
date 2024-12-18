@@ -1,9 +1,11 @@
 p A new Key as been generated.
 h2#keygeneration-key-id-label New Key ID
 #keygeneration-key-id-display
-#keygeneration-regeneration-button.click-button.flashy-button 
+
+#keygeneration-regeneration-button.click-button.flashy-button.icon-n-label
     svg: use(href="#svg-refresh-icon")
     .label Regenerate New Key
+    
 #keygeneration-protected-indicator 
     #keygeneration-not-protected-indicator 
         svg: use(href="#svg-unprotected-icon")
@@ -18,20 +20,20 @@ h2#keygeneration-key-id-label New Key ID
 h2 Define Key Protection?
 #keygeneration-protection-options 
 
-    #keygeneration-keep-unprotected.click-button.flashy-button 
+    #keygeneration-keep-unprotected.click-button.flashy-button.icon-n-label
         svg: use(href="#svg-unprotected-icon")
         .label Go Raw and Unprotected
     
-    #keygeneration-phrase-protect.click-button.flashy-button
+    #keygeneration-phrase-protect.click-button.flashy-button.icon-n-label
         svg: use(href="#svg-phrase-protected-icon") 
         .label Protect with Secret Phrase
 
-    #keygeneration-qr-protect.click-button.flashy-button
+    #keygeneration-qr-protect.click-button.flashy-button.icon-n-label
         svg: use(href="#svg-qr-protected-icon") 
         .label Protect with Qr Code 
 
 
-#keygeneration-conclusion-row 
+#keygeneration-conclusion-row.button-box
     #keygeneration-use-button.click-button.flashy-button 
         .label Use
     #keygeneration-cancel-button.click-button.flashy-button 

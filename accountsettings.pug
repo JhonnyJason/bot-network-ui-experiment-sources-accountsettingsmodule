@@ -9,7 +9,7 @@
             .display-frame-content
             svg.copy-icon: use(href="#svg-copy-icon")
         #id-qr-line
-            #id-qr-button.click-button.flashy-button
+            #id-qr-button.click-button.flashy-button.icon-n-label
                 svg: use(href="#svg-qrcode-icon")
                 .label Show ID QR
     
@@ -17,17 +17,17 @@
     #keyimport-frame: include keyimportframe.pug
     #keyexport-frame: include keyexportframe.pug
 
-    #options-grid
-        #generate-key-button.click-button.flashy-button
+    #options-grid.button-box
+        #generate-key-button.click-button.flashy-button.icon-n-label
             svg: use(href="#svg-add-icon")
             .label Generate
-        #import-key-button.click-button.flashy-button 
+        #import-key-button.click-button.flashy-button.icon-n-label
             svg: use(href="#svg-import-icon")
             .label Import
-        #export-key-button.click-button.flashy-button 
+        #export-key-button.click-button.flashy-button.icon-n-label
             svg: use(href="#svg-export-icon")
             .label Export
-        #delete-key-button.click-button.flashy-button
+        #delete-key-button.click-button.danger-button.icon-n-label
              svg: use(href="#svg-trash-icon")
              .label Delete
 

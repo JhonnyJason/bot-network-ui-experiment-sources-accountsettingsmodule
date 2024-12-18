@@ -2,7 +2,6 @@
 id-copy-icon-size ?= 15px
 cd-bright ?= white
 
-
 #accountsettings
     color = cd-bright
     p.sideline
@@ -23,28 +22,9 @@ cd-bright ?= white
     h3
         margin 10px 0
 
-    .flashy-button
-        background-color cd-flash
-        font-weight bold
-        min-width 150px
-        padding 10px
-        border-radius: 3px
-        display flex
-        align-content: center
-        justify-content: center
-        svg
-            height 15px
-            width 15px
-            margin-right 10px
-
-    #delete-key-button.flashy-button
-        background-color: #600
 
 #options-grid
-    display grid
     margin-top 60px
-    gap 20px
-    grid-template-columns: 1fr 1fr
     padding-bottom 30px
 
 #keygeneration-frame
@@ -117,13 +97,6 @@ cd-bright ?= white
     #keyexport-frame
         display block
 
-@media screen and (max-width: 410px)
-    #accountsettings
-        #options-grid
-            grid-template-columns: 1fr
-
-
-
 /*====================================================================
 Keygeneration Frame
 ====================================================================*/
@@ -131,7 +104,6 @@ Keygeneration Frame
     h2
         margin-top 50px
         margin-bottom 7px
-
 
 #keygeneration-key-id-display
     background-color #024
@@ -141,15 +113,11 @@ Keygeneration Frame
     overflow: hidden
     text-overflow: ellipsis
 
-
-#keygeneration-regeneration-button
-    // max-width 320px
-    box-sizing: border-box
-    display: block
-    margin-left auto
+// #keygeneration-regeneration-button
+//     box-sizing: border-box
+//     display: block
 
 #keygeneration-protected-indicator
-    // text-align: left
     margin-top 20px
     svg
         height 30px
@@ -159,11 +127,14 @@ Keygeneration Frame
         line-height: 30px
         font-weight: bold
 
+
 #keygeneration-not-protected-indicator 
     color cd-warning-orange
+
 #keygeneration-phrase-protected-indicator
     color: cd-okay-green
     display none
+
 #keygeneration-qr-protected-indicator
     color: cd-okay-green
     display none
@@ -193,8 +164,6 @@ Keygeneration Frame
         svg
             height  25px
             width 25px
-        .label
-            line-height: 25px
 
     .click-button.active
         color #fff
@@ -203,9 +172,7 @@ Keygeneration Frame
 
 #keygeneration-conclusion-row
     margin 30px 0
-    display: grid
-    gap 20px
-    grid-template-columns: 1fr 1fr
+
     #keygeneration-use-button
         opacity 0.2
         pointer-events: none
@@ -220,14 +187,3 @@ Key Import Frame
 ====================================================================*/
 #keyimport-conclusion-row
     margin 30px 0
-    display: grid
-    gap 20px
-    grid-template-columns: 1fr 1fr
-    #keyimport-use-button
-        opacity 0.2
-        pointer-events: none
-
-#keyimport-conclusion-row.acceptable
-    #keyimport-use-button
-        opacity 1
-        pointer-events: all
