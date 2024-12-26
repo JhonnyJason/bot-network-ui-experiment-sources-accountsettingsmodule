@@ -73,7 +73,6 @@ deleteKeyButtonClicked = ->
 
 #endregion
 
-
 ############################################################
 export displayKeyId = (keyId) ->
     log "displayKeyId"
